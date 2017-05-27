@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	    http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 无参构造 -->
+	<bean id="user" class="com.szl.springioc.model.User" />
+	<!-- 有参构造 -->
+	<bean id="user1" class="com.szl.springioc.model.User">
+		<constructor-arg value="张三"></constructor-arg>
+		<constructor-arg value="18"></constructor-arg>
+		<constructor-arg value="zhangsan@qq.com"></constructor-arg>
+	</bean>
+	<!-- setter注入 -->
+	<bean id="user2" class="com.szl.springioc.model.User">
+		<property name="name" value="李四"></property>
+	</bean>
+	
+	<!-- setter注入 boolean类型 -->
+	<bean id="collectionsBoolean" class="com.szl.springioc.model.Collections">
+		<property name="flag" value="true"></property>
+	</bean>
+	
+	<!-- setter注入 List类型 -->
+	<bean id="collectionsList" class="com.szl.springioc.model.Collections">
+		<property name="listParmas">
+			<list >
+				<value>test</value>
+				<value>test1</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- setter注入 Map类型 -->
+	<bean id="collectionsMap" class="com.szl.springioc.model.Collections">
+		<property name="mapParams">
+			<map >
+				<entry key="key1" value="你好"></entry>
+				<entry key="key2" value="世界"></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- setter注入 Set类型 -->
+	<bean id="collectionsSet" class="com.szl.springioc.model.Collections">
+		<property name="setParams">
+			<set>
+				<value>11</value>
+				<value>22</value>
+				<value>22</value>
+			</set>
+		</property>
+	</bean>
+	
+	<!-- p命名空间 -->
+	<bean id="collectionsP" class="com.szl.springioc.model.Collections" 
+		p:flag="1"
+	/>
+
+	
+	
+
+</beans>
