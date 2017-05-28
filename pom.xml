@@ -335,5 +335,6 @@
 	</build>
 	<modules>
    	 <module>springioc</module>
- 	</modules>
+   	 <module>springaop</module>
+	</modules>
 </project>

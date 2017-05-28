@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	    http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+	
+	<!-- IOC容器管理bean -->
+	<!-- 给userService注入userDao -->
+	<bean id="userDao" class="com.szl.springaop.dao.impl.UserDaoImpl" />
+	<bean id="userService" class="com.szl.springaop.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<bean id="aopLog" class="com.szl.springaop.aop.AopLog"></bean>
+	
+	<!-- 1. 在spring容器中使用AOP配置，我们要在<beans>标签中引入AOP的命名空间，以导入与AOP配置相关的标签 -->
+	<!-- 2. 与AOP相关的配置都放在<aop:config>标签中 -->
+	<aop:config proxy-target-class="true">
+		<!-- 3. <aop:pointcut>是切入点标签，可以在expression属性中配置切入点 -->
+		<aop:pointcut expression="execution(* com.szl.springaop.service.impl.*.*(..))" id="servicePointcut"/>
+		<!-- 4. <aop:aspect>是织入标签，在织入时要设置增强处理的类型,此处的意思是：在匹配"servicePointcut"的切入点方法之前织入"aopLog"对象的 "beforeAdvice方法"-->
+		<aop:aspect ref="aopLog">
+			<!-- 前后通知 -->
+			<!-- <aop:before method="beforeAdvice" pointcut-ref="servicePointcut"/> -->
+			<!-- 后置通知 -->
+			<!-- <aop:after method="afterAdvice" pointcut-ref="servicePointcut"/> -->
+			<!-- 环绕通知 -->
+			<!-- <aop:around method="aroundAdvice" pointcut-ref="servicePointcut"/> -->
+			<!-- 后置返回通知 -->
+			<!-- <aop:after-returning method="afterReturningAdvice" pointcut-ref="servicePointcut"/> -->
+			<!-- 后置异常通知 -->
+			<!-- <aop:after-throwing method="afterThrowingAdvice" pointcut-ref="servicePointcut"/> -->
+			
+			<!-- 测试连接点信息和获取异常 -->
+			<!-- 获取连接点信息 -->
+			<!-- <aop:before method="beforeAdviceJoinPoint" pointcut-ref="servicePointcut"/> -->
+			
+			<!-- 后置返回通知-获取返回值 -->
+		<!-- 	<aop:after-returning method="afterReturningAdviceObject" pointcut-ref="servicePointcut" returning="objectVal"/> -->
+			<!-- 后置异常通知-获取异常信息 -->
+			<!-- <aop:after-throwing method="afterThrowingAdviceException" pointcut-ref="servicePointcut" throwing="ex"/> -->
+			<!-- 环绕通知，测试调用目标方法 -->
+			<!-- <aop:around method="aroundAdvicePjp" pointcut-ref="servicePointcut"/> -->
+		</aop:aspect>
+	</aop:config>
+
+	<!--  Spring默认不支持@AspectJ风格的切面声明, 为了支持需要使用如下配置  -->
+	<aop:aspectj-autoproxy />
+	<bean id="aspectJLog" class="com.szl.springaop.aop.AspectJLog"></bean>
+
+</beans>
