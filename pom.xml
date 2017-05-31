@@ -336,5 +336,6 @@
 	<modules>
    	 <module>springioc</module>
    	 <module>springaop</module>
-	</modules>
+    <module>springjdbc</module>
+  </modules>
 </project>
