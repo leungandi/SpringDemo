@@ -31,7 +31,7 @@ public class JdbcTemplateTest {
 	private ApplicationContext ac;
 	
 	@Before
-	public void inti() {
+	public void init() {
 		ac = new ClassPathXmlApplicationContext("jdbc_test.xml");
 	}
 	

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	    http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+       	<!-- 读取配置文件 -->
+        <context:property-placeholder location="database.properties"/>
+        
+        <!-- 配置数据源 -->
+        <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"  
+	    destroy-method="close">  
+		    <property name="driverClassName" value="${jdbc.driver}" />  
+		    <property name="url" value="${jdbc.url}" />  
+		    <property name="username" value="${jdbc.username}" />  
+		    <property name="password" value="${jdbc.password}" />  
+		</bean>
+ 	 	
+ 	 	<!-- 在基本的 MyBatis 中,session 工厂可以使用 SqlSessionFactoryBuilder 来创建。而在 MyBatis-Spring 中,则使用 SqlSessionFactoryBean 来替代 -->
+ 	 	<!-- sqlSessionFactory配置 -->	 
+ 	 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+ 	 		<!-- 指定数据源 -->
+	 	 	<property name="dataSource" ref="dataSource"></property>
+	 	 	<!-- 指定mybatis配置文件 -->
+			<property name="configLocation" value="classpath:configuration.xml"/> 
+			<property name="mapperLocations" value="classpath*:com/szl/springorm/dao/impl/*.xml"></property>
+ 	 	</bean>
+ 	 	
+ 	 	<!-- 1.使用sqlSessionTemplate,注入sqlSessionFactory -->
+ 	 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+ 	 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+ 	 	</bean>
+ 	 	<!-- 2.使用sqlSessionDaoSupport,注入sqlSessionFactory-->
+ 	 	<bean id="userDaoImpl" class="com.szl.springorm.dao.impl.UserDaoImpl">
+ 	 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+ 	 	</bean>
+ 	 	
+ 	 	<!--为了代替手工使用 SqlSessionDaoSupport 或 SqlSessionTemplate 编写数据访问对象 (DAO)的代码
+ 	 		MyBatis-Spring 提供了一个动态代理的实现:MapperFactoryBean  -->
+ 	 	<!-- 1.注册MapperFactoryBean -->	
+ 	 	<bean id="userDao1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+ 	 		<!-- 注册映射器,也就是DAO接口 -->
+ 	 		<property name="mapperInterface" value="com.szl.springorm.dao.UserDao1"></property>
+ 	 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+ 	 	</bean>
+		<!-- 2.service中直接注入userDao --> 	 	
+ 	 	<bean id="userServiceImpl" class="com.szl.springorm.service.impl.UserServiceImpl">
+ 	 		<property name="userDao1" ref="userDao1"></property>
+ 	 	</bean>
+ 	 	
+ 	 	
+ 	 	
+ 	 	<!-- 没有必要在 Spring 的 XML 配置文件中注册所有的映射器。
+ 	 		相反,你可以使用一个 MapperScannerConfigurer , 它 将 会 查 找 类 路 径 下 的 映 射 器 并 自 动 将 它 们 创 建 成 MapperFactoryBean -->
+ 	 	<!-- 这种自动扫描，需要结合注解来使用 -->
+ 	 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+ 	 		<!--basePackage属性是为映射器接口文件设置基本的包路径,也就是DAO的包-->
+ 	 		<property name="basePackage" value="com.szl.springorm.dao"></property>
+ 	 		<!-- 一个数据源，可以不配置sqlSessionFactory -->
+ 	 		<!-- <property name="sqlSessionFactory" ref="sqlSessionFactory" /> -->
+ 	 	</bean>	
+ 	 	
+ 	 	
+ 	 	
+ 	 	
+ 	 	
+ 	 	
+        
+</beans>

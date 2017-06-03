@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 命名空间,指向DAO接口 -->
+<mapper namespace="com.szl.springorm.dao.UserDao1" >
+ 
+ <!-- 查询用户 -->
+ <select id="queryUser" resultType="java.util.Map">
+ 	select * from t_users
+ </select>
+ 
+ <!-- 新增用户 -->
+ <insert id="addUser" parameterType="com.szl.springorm.model.User">
+ 	INSERT INTO t_users(name,email)VALUES(#{user.name},#{user.email})
+ </insert>
+ 
+ <!-- 删除用户 -->
+ <delete id="delUserById" parameterType="java.lang.Long">
+ 	delete from t_users where id=#{id}
+ </delete>
+ 
+</mapper>
