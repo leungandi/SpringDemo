@@ -333,10 +333,11 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
+  <modules>
    	 <module>springioc</module>
    	 <module>springaop</module>
-    <module>springjdbc</module>
-    <module>springorm</module>
+     <module>springjdbc</module>
+     <module>springorm</module>
+     <module>springtransaction</module>
   </modules>
 </project>

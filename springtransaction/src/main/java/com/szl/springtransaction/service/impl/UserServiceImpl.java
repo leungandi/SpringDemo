@@ -1,8 +1,9 @@
-package com.szl.springorm.service.impl;
+package com.szl.springtransaction.service.impl;
 
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
 
 import com.szl.springorm.dao.UserDao1;
 import com.szl.springorm.model.User;
@@ -22,7 +23,8 @@ public class UserServiceImpl implements UserService {
 	public int addUser(User user) {
 		return userDao1.addUser(user);
 	}
-
+	
+	@Transactional
 	@Override
 	public List<Map<String, Object>> queryUser() {
 		return userDao1.queryUser();
