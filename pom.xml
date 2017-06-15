@@ -339,5 +339,6 @@
      <module>springjdbc</module>
      <module>springorm</module>
      <module>springtransaction</module>
+    <module>springweb</module>
   </modules>
 </project>
