@@ -19,7 +19,6 @@ public class SpringWebTest {
 	
 	@Before
 	public void init(){
-
 		ac = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 	}
@@ -35,6 +34,17 @@ public class SpringWebTest {
 		UserServiceImpl userDaoImpl = ApplicationContextUtil.getApplicationContext().getBean("userServiceImpl",UserServiceImpl.class);
 		List<Map<String, Object>> queryUser = userDaoImpl.queryUser();
 		System.out.println("SpringWeb1:"+queryUser.toString());
+	}
+	
+	/**
+	 * 
+	 * 测试从ApplicationContextAware中获取上下文bean
+	 */
+	@Test
+	public void testApplicationContextAware(){
+		UserServiceImpl userDaoImpl = ApplicationContextUtil.getApplicationContext().getBean("userServiceImpl",UserServiceImpl.class);
+		List<Map<String, Object>> queryUser = userDaoImpl.queryUser();
+		System.out.println("SpringWeb:"+queryUser.toString());
 	}
 
 }

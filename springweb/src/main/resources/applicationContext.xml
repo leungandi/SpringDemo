@@ -15,6 +15,7 @@
 	
 	<!-- 方便在代码中使用Sping的上下文 -->
 	<bean id="ApplicationContextUtil" class="com.szl.springweb.util.ApplicationContextUtil"></bean>
+
 	
 	<!-- 引入 transaction_test.xml-->
 	<import resource="transaction_test.xml"/>
